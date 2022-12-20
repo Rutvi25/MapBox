@@ -13,19 +13,36 @@
     />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
     <style>
-      body {
+      html, body {
         margin: 0;
         padding: 0;
+        height: 100%;
       }
       #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
         width: 100%;
+        flex-grow: 1;
+        height: 100%;
+      }
+      #container {
+        display: flex;
+        height: 100%;
+      }
+      #sidebar {
+        width: 300px;
+        flex-shrink: 0;
+        height: 100%;
+        padding: 30px;
       }
     </style>
   </head>
   <body>
+    <div id="container">
+      <div id="sidebar">
+        <button id="fly-to-coney">Fly to Coney Island</button>
+      </div>
+      <div id="map"></div>
+    </div>
+    
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
     <link
       rel="stylesheet"
@@ -135,6 +152,9 @@
           alert(`The population of ${boro_name} is ${pop2020}`);
         }
       });
+      document.querySelector('#fly-to-coney').addEventListener('click', () => {
+
+      })
     </script>
   </body>
 </html>
