@@ -110,10 +110,10 @@
               'yellow',
               5,
               'pink',
-              'steelblue'
-            ]
-          }
-        }, 'road-label')
+              'steelblue',
+            ],
+          },
+        });
         map.addLayer({
           id: 'borough-boundaries-line',
           type: 'line',
@@ -121,12 +121,20 @@
           paint: {
             'line-color': 'white',
             'line-width': 4,
-            'line-opacity': 0.7
-          }
-        })
-      }, 'road-label');
-
-      
+            'line-opacity': 0.7,
+          },
+        });
+      });
+      map.on('click', (e) => {
+        console.log('click', e.point);
+        const [selectedBorough] = map.queryRenderedFeatures(e.point, {
+          layers: ['borough-boundaries-fill'],
+        });
+        if (selectedBorough) {
+          const { boro_name, pop2020 } = selectedBorough.properties;
+          alert(`The population of ${boro_name} is ${pop2020}`);
+        }
+      });
     </script>
   </body>
 </html>
