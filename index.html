@@ -13,7 +13,8 @@
     />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         height: 100%;
@@ -33,16 +34,21 @@
         height: 100%;
         padding: 30px;
       }
+      button {
+        display: block;
+      }
     </style>
   </head>
   <body>
     <div id="container">
       <div id="sidebar">
-        <button id="fly-to-coney">Fly to Coney Island</button>
+        <button id="fly-to-coney">Fly to Coney Island</button><br />
+        <button id="fit-to-queens">Fit to Queens</button><br />
+        <button id="reset-view">Reset</button>
       </div>
       <div id="map"></div>
     </div>
-    
+
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
     <link
       rel="stylesheet"
@@ -51,6 +57,8 @@
     />
     <div id="map"></div>
     <script>
+      const INITIAL_CENTER = [-73.935242, 40.73061];
+      const INITIAL_ZOOM = 9;
       // TO MAKE THE MAP APPEAR YOU MUST
       // ADD YOUR ACCESS TOKEN FROM
       // https://account.mapbox.com
@@ -60,8 +68,8 @@
         container: 'map', // It'll find the div with id 'map' on the page
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/dark-v11',
-        center: [-73.935242, 40.73061],
-        zoom: 11,
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
         projection: 'globe',
       });
       const boroughs = [
@@ -129,6 +137,12 @@
               'pink',
               'steelblue',
             ],
+            'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hoven'], false],
+              1,
+              0.5,
+            ],
           },
         });
         map.addLayer({
@@ -152,9 +166,29 @@
           alert(`The population of ${boro_name} is ${pop2020}`);
         }
       });
+      // fly to coney island
       document.querySelector('#fly-to-coney').addEventListener('click', () => {
-
-      })
+        map.flyTo({
+          center: [-73.98587, 40.572506],
+          zoom: 15,
+          pitch: 45,
+        });
+      });
+      // reset map view
+      document.querySelector('#reset-view').addEventListener('click', () => {
+        map.flyTo({
+          center: INITIAL_CENTER,
+          zoom: INITIAL_ZOOM,
+          pitch: 0,
+        });
+      });
+      // reset map view
+      document.querySelector('#fit-to-queens').addEventListener('click', () => {
+        map.fitBounds([
+          [-73.931334, 40.641147], // southwestern corner of the bounds
+          [-73.806980, 40.803824], // northestern corner of the bounds
+        ]);
+      });
     </script>
   </body>
 </html>
